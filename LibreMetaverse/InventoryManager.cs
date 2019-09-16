@@ -656,15 +656,21 @@ namespace OpenMetaverse
             EventHandler<FolderUpdatedEventArgs> callback =
                 delegate(object sender, FolderUpdatedEventArgs e)
                 {
-                    if (e.FolderID == folder
-                        && _Store[folder] is InventoryFolder)
+                    if (e.FolderID != folder)
                     {
-                        // InventoryDescendentsHandler only stores DescendendCount if both folders and items are fetched.
-                        if (_Store.GetContents(folder).Count >= ((InventoryFolder)_Store[folder]).DescendentCount)
-                        {
+                        return;
+                    }
 
-                            fetchEvent.Set();
-                        }
+                    var storeFolder = _Store[folder] as InventoryFolder;
+                    if (storeFolder == null)
+                    {
+                        return;
+                    }
+
+                    // InventoryDescendentsHandler only stores DescendendCount if both folders and items are fetched.
+                    if (_Store.GetContents(folder).Count >= storeFolder.DescendentCount)
+                    {
+                        fetchEvent.Set();
                     }
                 };
 
