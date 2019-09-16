@@ -666,10 +666,6 @@ namespace OpenMetaverse
                             fetchEvent.Set();
                         }
                     }
-                    else
-                    {
-                        fetchEvent.Set();
-                    }
                 };
 
             FolderUpdated += callback;
